@@ -34,12 +34,12 @@
             <aside class="sidebar">
                 <!-- Current Operator -->
                 <div class="current-operator-section">
-                    <div class="current-operator-card">
-                        <img src="https://i.pravatar.cc/200?img=68" alt="EI6LF" class="current-operator-image">
+                    <div class="current-operator-card" id="currentOperatorCard">
+                        <img src="https://i.pravatar.cc/200?img=68" alt="EI6LF" class="current-operator-image" id="currentOperatorImage">
                         <div class="current-operator-info">
-                            <h2 class="current-callsign">EI6LF</h2>
-                            <p class="current-name">Brian Keating</p>
-                            <p class="current-location">Worked from Preubader</p>
+                            <h2 class="current-callsign" id="currentCallsign">EI6LF</h2>
+                            <p class="current-name" id="currentName">Brian Keating</p>
+                            <p class="current-location" id="currentLocation">Worked from Preubader</p>
                         </div>
                     </div>
                 </div>
@@ -59,8 +59,8 @@
         </div>
 
         <!-- Bottom Queue Bar -->
-        <div class="bottom-queue">
-            <div class="queue-card">
+        <div class="bottom-queue" id="bottomQueue">
+            <div class="queue-card" data-position="0">
                 <img src="https://i.pravatar.cc/150?img=14" alt="ON8EI" class="queue-image">
                 <div class="queue-info">
                     <h3 class="queue-callsign">ON8EI</h3>
@@ -68,7 +68,7 @@
                     <p class="queue-time">00:05</p>
                 </div>
             </div>
-            <div class="queue-card">
+            <div class="queue-card" data-position="1">
                 <img src="https://i.pravatar.cc/150?img=16" alt="W2RE" class="queue-image">
                 <div class="queue-info">
                     <h3 class="queue-callsign">W2RE</h3>
@@ -76,7 +76,7 @@
                     <p class="queue-time">00:15</p>
                 </div>
             </div>
-            <div class="queue-card">
+            <div class="queue-card" data-position="2">
                 <img src="https://i.pravatar.cc/150?img=7" alt="ET2II" class="queue-image">
                 <div class="queue-info">
                     <h3 class="queue-callsign">ET2II</h3>
@@ -84,7 +84,7 @@
                     <p class="queue-time">00:25</p>
                 </div>
             </div>
-            <div class="queue-card">
+            <div class="queue-card" data-position="3">
                 <img src="https://i.pravatar.cc/150?img=20" alt="EI5JBB" class="queue-image">
                 <div class="queue-info">
                     <h3 class="queue-callsign">EI5JBB</h3>
@@ -252,6 +252,150 @@
         
         updateClock();
         setInterval(updateClock, 1000);
+
+        // Current operator data
+        let currentOperator = {
+            callsign: 'EI6LF',
+            name: 'Brian Keating',
+            location: 'Ireland',
+            coordinates: { lat: 53.3498, lon: -6.2603 }, // Dublin, Ireland
+            profileImage: 'https://i.pravatar.cc/200?img=68'
+        };
+
+        // Queue animation functionality
+        document.getElementById('currentOperatorCard').addEventListener('click', function() {
+            // 1. Create a clone of current operator image for drop animation
+            const currentOpImage = document.getElementById('currentOperatorImage');
+            const rect = currentOpImage.getBoundingClientRect();
+            const clone = currentOpImage.cloneNode(true);
+            clone.className = 'drop-to-map';
+            clone.style.position = 'fixed';
+            clone.style.left = rect.left + 'px';
+            clone.style.top = rect.top + 'px';
+            clone.style.width = rect.width + 'px';
+            clone.style.height = rect.height + 'px';
+            clone.style.borderRadius = '50%';
+            clone.style.border = '5px solid rgba(0, 255, 157, 0.8)';
+            document.body.appendChild(clone);
+
+            // Calculate map center position
+            const mapContainer = document.getElementById('map');
+            const mapRect = mapContainer.getBoundingClientRect();
+            const targetX = mapRect.left + mapRect.width / 2 - rect.width / 2;
+            const targetY = mapRect.top + mapRect.height / 2 - rect.height / 2;
+
+            // Animate drop to map
+            clone.style.animation = 'dropToMap 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+            clone.style.left = targetX + 'px';
+            clone.style.top = targetY + 'px';
+
+            // 2. Add current operator to map as worked station
+            setTimeout(() => {
+                const icon = L.divIcon({
+                    html: `<div class="marker-avatar worked"><img src="${currentOperator.profileImage}" alt="${currentOperator.callsign}" /></div>`,
+                    iconSize: [60, 60],
+                    iconAnchor: [30, 30],
+                    popupAnchor: [0, -30],
+                    className: 'custom-marker'
+                });
+                
+                L.marker([currentOperator.coordinates.lat, currentOperator.coordinates.lon], { icon })
+                    .addTo(map)
+                    .bindPopup(`
+                        <div class="map-popup">
+                            <strong>${currentOperator.callsign}</strong><br>
+                            ${currentOperator.name}<br>
+                            ${currentOperator.location}
+                        </div>
+                    `);
+            }, 800);
+
+            // 3. Get first queue operator (EI5JBB)
+            const firstQueueCard = document.querySelector('.queue-card[data-position="3"]');
+            const firstQueueData = {
+                callsign: firstQueueCard.querySelector('.queue-callsign').textContent,
+                name: 'James Burke',
+                location: firstQueueCard.querySelector('.queue-location').textContent,
+                image: firstQueueCard.querySelector('.queue-image').src
+            };
+
+            // 4. Create rising animation for EI5JBB
+            const queueRect = firstQueueCard.getBoundingClientRect();
+            const risingClone = firstQueueCard.cloneNode(true);
+            risingClone.className = 'rise-to-current';
+            risingClone.style.position = 'fixed';
+            risingClone.style.left = queueRect.left + 'px';
+            risingClone.style.top = queueRect.top + 'px';
+            risingClone.style.width = queueRect.width + 'px';
+            risingClone.style.height = queueRect.height + 'px';
+            document.body.appendChild(risingClone);
+
+            // Animate rise
+            setTimeout(() => {
+                risingClone.style.animation = 'riseToCurrentPosition 1s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                const currentRect = document.getElementById('currentOperatorCard').getBoundingClientRect();
+                risingClone.style.left = currentRect.left + 'px';
+                risingClone.style.top = currentRect.top + 'px';
+            }, 100);
+
+            // 5. Shift all queue cards left
+            const queueCards = document.querySelectorAll('.queue-card');
+            queueCards.forEach((card, index) => {
+                card.classList.add('queue-shift-animation');
+            });
+
+            // 6. Update UI after animations
+            setTimeout(() => {
+                // Update current operator
+                document.getElementById('currentCallsign').textContent = firstQueueData.callsign;
+                document.getElementById('currentName').textContent = firstQueueData.name;
+                document.getElementById('currentLocation').textContent = 'Working from ' + firstQueueData.location;
+                document.getElementById('currentOperatorImage').src = firstQueueData.image;
+
+                // Update queue by shifting data
+                for (let i = 3; i > 0; i--) {
+                    const currentCard = document.querySelector(`.queue-card[data-position="${i}"]`);
+                    const prevCard = document.querySelector(`.queue-card[data-position="${i-1}"]`);
+                    
+                    currentCard.querySelector('.queue-image').src = prevCard.querySelector('.queue-image').src;
+                    currentCard.querySelector('.queue-image').alt = prevCard.querySelector('.queue-image').alt;
+                    currentCard.querySelector('.queue-callsign').textContent = prevCard.querySelector('.queue-callsign').textContent;
+                    currentCard.querySelector('.queue-location').textContent = prevCard.querySelector('.queue-location').textContent;
+                    currentCard.querySelector('.queue-time').textContent = prevCard.querySelector('.queue-time').textContent;
+                }
+
+                // Add new operator to position 0
+                const newCard = document.querySelector('.queue-card[data-position="0"]');
+                newCard.querySelector('.queue-image').src = 'https://i.pravatar.cc/150?img=25';
+                newCard.querySelector('.queue-image').alt = 'VE2ABC';
+                newCard.querySelector('.queue-callsign').textContent = 'VE2ABC';
+                newCard.querySelector('.queue-location').textContent = 'Canada';
+                newCard.querySelector('.queue-time').textContent = '01:05';
+
+                // Update current operator data
+                currentOperator = {
+                    callsign: firstQueueData.callsign,
+                    name: firstQueueData.name,
+                    location: firstQueueData.location,
+                    coordinates: { lat: 52.5200, lon: -7.1380 }, // Ireland coordinates
+                    profileImage: firstQueueData.image
+                };
+
+                // Clean up clones
+                clone.remove();
+                risingClone.remove();
+
+                // Remove animation classes
+                queueCards.forEach(card => {
+                    card.classList.remove('queue-shift-animation');
+                });
+
+                // Update queue stats
+                const inQueueStat = document.querySelector('.stat-value');
+                const workedStat = document.querySelectorAll('.stat-value')[1];
+                workedStat.textContent = String(parseInt(workedStat.textContent) + 1);
+            }, 1000);
+        });
     </script>
 </body>
 </html>
