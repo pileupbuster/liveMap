@@ -18,8 +18,11 @@ This is now a **static website** that can be hosted anywhere without a server. S
 
 ## Usage
 
-### Option 1: Local Web Server (Recommended)
-Due to CORS restrictions on map tiles, it's best to serve the site locally:
+### Option 1: Direct File Access
+Simply open `index.html` in your web browser. The map uses CARTO tiles which work without authentication.
+
+### Option 2: Local Web Server
+For development, you can serve it locally:
 
 ```bash
 # Python 3
@@ -33,9 +36,6 @@ npx http-server
 ```
 
 Then open http://localhost:8000 in your browser.
-
-### Option 2: Direct File Access
-You can open `index.html` directly, but map tiles may not load due to CORS restrictions.
 
 ### Option 3: Static Hosting
 Host the files on any static web server:
