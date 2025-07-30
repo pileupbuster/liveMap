@@ -262,8 +262,13 @@
             profileImage: 'https://i.pravatar.cc/200?img=68'
         };
 
+        // Track remaining operators
+        let remainingOperators = 4;
+
         // Queue animation functionality
         document.getElementById('currentOperatorCard').addEventListener('click', function() {
+            if (remainingOperators <= 0) return; // No operators left to work
+
             // 1. Create a clone of current operator image for drop animation
             const currentOpImage = document.getElementById('currentOperatorImage');
             const rect = currentOpImage.getBoundingClientRect();
@@ -276,18 +281,22 @@
             clone.style.height = rect.height + 'px';
             clone.style.borderRadius = '50%';
             clone.style.border = '5px solid rgba(0, 255, 157, 0.8)';
+            clone.style.boxShadow = '0 0 30px rgba(0, 255, 157, 0.5)';
             document.body.appendChild(clone);
 
-            // Calculate map center position
+            // Calculate path to map - aim for left side of map where Ireland is
             const mapContainer = document.getElementById('map');
             const mapRect = mapContainer.getBoundingClientRect();
-            const targetX = mapRect.left + mapRect.width / 2 - rect.width / 2;
-            const targetY = mapRect.top + mapRect.height / 2 - rect.height / 2;
+            const targetX = mapRect.left + mapRect.width * 0.3; // Left side of map
+            const targetY = mapRect.top + mapRect.height * 0.4; // Upper middle
 
-            // Animate drop to map
-            clone.style.animation = 'dropToMap 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards';
-            clone.style.left = targetX + 'px';
-            clone.style.top = targetY + 'px';
+            // Animate with transition for smooth movement
+            clone.style.transition = 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            setTimeout(() => {
+                clone.style.left = targetX + 'px';
+                clone.style.top = targetY + 'px';
+                clone.style.animation = 'dropToMap 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+            }, 50);
 
             // 2. Add current operator to map as worked station
             setTimeout(() => {
@@ -310,11 +319,16 @@
                     `);
             }, 800);
 
-            // 3. Get first queue operator (EI5JBB)
-            const firstQueueCard = document.querySelector('.queue-card[data-position="3"]');
+            // 3. Get first queue operator from leftmost position
+            const firstQueueCard = document.querySelector('.queue-card[data-position="0"]:not(.placeholder)');
+            if (!firstQueueCard) return; // No more operators in queue
+            
             const firstQueueData = {
                 callsign: firstQueueCard.querySelector('.queue-callsign').textContent,
-                name: 'James Burke',
+                name: firstQueueCard.querySelector('.queue-callsign').textContent === 'ON8EI' ? 'Erik Janssen' :
+                      firstQueueCard.querySelector('.queue-callsign').textContent === 'W2RE' ? 'Ray Anderson' :
+                      firstQueueCard.querySelector('.queue-callsign').textContent === 'ET2II' ? 'Mohammed Ali' :
+                      'James Burke',
                 location: firstQueueCard.querySelector('.queue-location').textContent,
                 image: firstQueueCard.querySelector('.queue-image').src
             };
@@ -352,25 +366,46 @@
                 document.getElementById('currentLocation').textContent = 'Working from ' + firstQueueData.location;
                 document.getElementById('currentOperatorImage').src = firstQueueData.image;
 
-                // Update queue by shifting data
-                for (let i = 3; i > 0; i--) {
+                // Shift queue cards left
+                for (let i = 0; i < 3; i++) {
                     const currentCard = document.querySelector(`.queue-card[data-position="${i}"]`);
-                    const prevCard = document.querySelector(`.queue-card[data-position="${i-1}"]`);
+                    const nextCard = document.querySelector(`.queue-card[data-position="${i+1}"]`);
                     
-                    currentCard.querySelector('.queue-image').src = prevCard.querySelector('.queue-image').src;
-                    currentCard.querySelector('.queue-image').alt = prevCard.querySelector('.queue-image').alt;
-                    currentCard.querySelector('.queue-callsign').textContent = prevCard.querySelector('.queue-callsign').textContent;
-                    currentCard.querySelector('.queue-location').textContent = prevCard.querySelector('.queue-location').textContent;
-                    currentCard.querySelector('.queue-time').textContent = prevCard.querySelector('.queue-time').textContent;
+                    if (nextCard && !nextCard.classList.contains('placeholder')) {
+                        currentCard.querySelector('.queue-image').src = nextCard.querySelector('.queue-image').src;
+                        currentCard.querySelector('.queue-image').alt = nextCard.querySelector('.queue-image').alt;
+                        currentCard.querySelector('.queue-callsign').textContent = nextCard.querySelector('.queue-callsign').textContent;
+                        currentCard.querySelector('.queue-location').textContent = nextCard.querySelector('.queue-location').textContent;
+                        currentCard.querySelector('.queue-time').textContent = nextCard.querySelector('.queue-time').textContent;
+                        currentCard.classList.remove('placeholder');
+                    } else {
+                        // No more operators, show placeholder
+                        currentCard.classList.add('placeholder');
+                        currentCard.innerHTML = `
+                            <div class="queue-placeholder-icon">➕</div>
+                            <div class="queue-info">
+                                <h3 class="queue-callsign" style="color: rgba(255,255,255,0.4)">Empty</h3>
+                                <p class="queue-location" style="color: rgba(255,255,255,0.3)">No operator</p>
+                                <p class="queue-time" style="color: rgba(255,255,255,0.3)">--:--</p>
+                            </div>
+                        `;
+                    }
                 }
 
-                // Add new operator to position 0
-                const newCard = document.querySelector('.queue-card[data-position="0"]');
-                newCard.querySelector('.queue-image').src = 'https://i.pravatar.cc/150?img=25';
-                newCard.querySelector('.queue-image').alt = 'VE2ABC';
-                newCard.querySelector('.queue-callsign').textContent = 'VE2ABC';
-                newCard.querySelector('.queue-location').textContent = 'Canada';
-                newCard.querySelector('.queue-time').textContent = '01:05';
+                // Last position becomes placeholder
+                remainingOperators--;
+                if (remainingOperators < 4) {
+                    const lastCard = document.querySelector('.queue-card[data-position="3"]');
+                    lastCard.classList.add('placeholder');
+                    lastCard.innerHTML = `
+                        <div class="queue-placeholder-icon">➕</div>
+                        <div class="queue-info">
+                            <h3 class="queue-callsign" style="color: rgba(255,255,255,0.4)">Empty</h3>
+                            <p class="queue-location" style="color: rgba(255,255,255,0.3)">No operator</p>
+                            <p class="queue-time" style="color: rgba(255,255,255,0.3)">--:--</p>
+                        </div>
+                    `;
+                }
 
                 // Update current operator data
                 currentOperator = {
@@ -393,6 +428,7 @@
                 // Update queue stats
                 const inQueueStat = document.querySelector('.stat-value');
                 const workedStat = document.querySelectorAll('.stat-value')[1];
+                inQueueStat.textContent = String(remainingOperators);
                 workedStat.textContent = String(parseInt(workedStat.textContent) + 1);
             }, 1000);
         });

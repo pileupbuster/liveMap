@@ -520,31 +520,57 @@ body::before {
 
 @keyframes dropToMap {
     0% {
-        transform: scale(1) rotate(0deg);
+        transform: scale(1) rotate(0deg) translateZ(0);
         opacity: 1;
     }
-    50% {
-        transform: scale(0.8) rotate(180deg);
-        opacity: 0.8;
+    70% {
+        transform: scale(0.6) rotate(180deg) translateZ(0);
+        opacity: 0.9;
     }
     100% {
-        transform: scale(0.3) rotate(360deg);
+        transform: scale(0.4) rotate(360deg) translateZ(0);
         opacity: 0;
     }
 }
 
 .queue-shift-animation {
-    animation: shiftPosition 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: shiftLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes shiftPosition {
+/* Placeholder card style */
+.queue-card.placeholder {
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    cursor: default;
+}
+
+.queue-card.placeholder:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: none;
+}
+
+.queue-placeholder-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px dashed rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+@keyframes shiftLeft {
     0% {
         transform: translateX(0);
         opacity: 1;
     }
     50% {
-        transform: translateX(-50px);
-        opacity: 0.7;
+        transform: translateX(50px);
+        opacity: 0.8;
     }
     100% {
         transform: translateX(0);
