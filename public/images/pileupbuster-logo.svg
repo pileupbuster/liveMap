@@ -1,0 +1,19 @@
+<svg width="400" height="100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="100" fill="transparent"/>
+  
+  <!-- EI6JGB Text -->
+  <text x="10" y="60" font-family="Arial Black, sans-serif" font-size="48" font-weight="900">
+    <tspan fill="#00ff9d">EI</tspan><tspan fill="#ffffff">6J</tspan><tspan fill="#ff7f00">GB</tspan>
+  </text>
+  
+  <!-- PileupBuster Text -->
+  <text x="200" y="60" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#ff7f00">
+    PileupBuster
+  </text>
+  
+  <!-- Radio wave decoration -->
+  <path d="M 360 30 Q 370 40 360 50" stroke="#00ff9d" stroke-width="3" fill="none"/>
+  <path d="M 370 25 Q 385 40 370 55" stroke="#009dff" stroke-width="3" fill="none"/>
+  <path d="M 380 20 Q 400 40 380 60" stroke="#ff7f00" stroke-width="3" fill="none"/>
+</svg>

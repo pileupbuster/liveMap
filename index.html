@@ -12,8 +12,7 @@
         <!-- Top Header -->
         <header class="top-header">
             <div class="logo-section">
-                <h1 class="logo-title">EI6JGB</h1>
-                <span class="logo-subtitle">PileupBuster</span>
+                <img src="public/images/pileupbuster-logo.svg" alt="EI6JGB PileupBuster" class="logo-image">
             </div>
             <div class="frequency-section">
                 <div class="frequency-value">14,121.00</div>
@@ -209,8 +208,8 @@
         // Initialize map with darker tiles
         const map = L.map('map').setView([45, -93], 4);
         
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '© OpenStreetMap contributors © CARTO'
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+            attribution: '© Stadia Maps © OpenMapTiles © OpenStreetMap contributors'
         }).addTo(map);
 
         // Add operators to map

@@ -93,24 +93,13 @@ body::before {
 
 .logo-section {
     display: flex;
-    align-items: baseline;
-    gap: 20px;
+    align-items: center;
 }
 
-.logo-title {
-    font-size: 48px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #00ff9d 0%, #ff7f00 50%, #009dff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 2px;
-}
-
-.logo-subtitle {
-    font-size: 24px;
-    color: #ff7f00;
-    font-weight: 500;
+.logo-image {
+    height: 60px;
+    width: auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .frequency-section {
