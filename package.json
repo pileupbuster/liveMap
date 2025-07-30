@@ -1,7 +1,7 @@
 {
   "name": "livemap",
   "version": "1.0.0",
-  "description": "",
+  "description": "A web-based application that provides amateur radio operators with a visual, real-time representation of their recent contacts. The application displays the geographic locations and profile information of the last 10 operators communicated with on an interactive map.",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -17,7 +17,7 @@
   "type": "commonjs",
   "dependencies": {
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",

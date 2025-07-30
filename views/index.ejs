@@ -3,104 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    
+    <title>Ham Radio Queue System - EI6JGB</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="/css/style.css">
-    
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
 </head>
 <body>
     <div class="container">
-        <div id="map" class="map-container"></div>
-        
-        <aside class="sidebar">
-            <h1 class="sidebar-title">Recent Contacts</h1>
-            <div class="operators-list">
-                <% operators.forEach(function(operator) { %>
-                    <div class="operator-card" data-callsign="<%= operator.callsign %>" 
-                         data-lat="<%= operator.coordinates.lat %>" 
-                         data-lon="<%= operator.coordinates.lon %>">
-                        <img src="<%= operator.profileImage %>" alt="<%= operator.callsign %>" class="operator-image">
-                        <div class="operator-info">
-                            <h3 class="operator-callsign"><%= operator.callsign %></h3>
-                            <p class="operator-name"><%= operator.name %></p>
-                            <p class="operator-location"><%= operator.location %></p>
-                            <p class="operator-grid">Grid: <%= operator.gridSquare %></p>
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="logo-section">
+                <h1 class="logo-title">EI6JGB</h1>
+                <span class="logo-subtitle">PileupBuster</span>
+            </div>
+            <div class="frequency-section">
+                <div class="frequency-value">14,121.00</div>
+                <div class="frequency-unit">MHz</div>
+            </div>
+            <div class="clock-section">
+                <div class="clock" id="clock">14:18</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Map Section -->
+            <div class="map-section">
+                <div id="map" class="map-container"></div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Current Operator -->
+                <div class="current-operator-section">
+                    <div class="current-operator-card">
+                        <img src="https://i.pravatar.cc/200?img=68" alt="EI6LF" class="current-operator-image">
+                        <div class="current-operator-info">
+                            <h2 class="current-callsign">EI6LF</h2>
+                            <p class="current-name">Brian Keating</p>
+                            <p class="current-location">Worked from Preubader</p>
                         </div>
                     </div>
-                <% }); %>
-            </div>
-        </aside>
-    </div>
-    
-    <script>
-        const operators = <%- operatorsJSON %>;
-        
-        const map = L.map('map').setView([39.8283, -98.5795], 4);
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        
-        const markers = {};
-        
-        operators.forEach(function(operator) {
-            const iconHtml = `<div class="marker-icon">
-                <img src="${operator.profileImage}" alt="${operator.callsign}" />
-            </div>`;
-            
-            const customIcon = L.divIcon({
-                html: iconHtml,
-                className: 'custom-marker',
-                iconSize: [50, 50],
-                iconAnchor: [25, 25],
-                popupAnchor: [0, -25]
-            });
-            
-            const marker = L.marker([operator.coordinates.lat, operator.coordinates.lon], {
-                icon: customIcon
-            }).addTo(map);
-            
-            const popupContent = `
-                <div class="popup-content">
-                    <img src="${operator.profileImage}" alt="${operator.callsign}" class="popup-image" />
-                    <h3>${operator.callsign}</h3>
-                    <p><strong>${operator.name}</strong></p>
-                    <p>${operator.location}</p>
-                    <p>Grid: ${operator.gridSquare}</p>
                 </div>
-            `;
-            
-            marker.bindPopup(popupContent);
-            markers[operator.callsign] = marker;
-        });
+
+                <!-- Queue Stats -->
+                <div class="queue-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">In Queue</span>
+                        <span class="stat-value"><%= queueList ? queueList.length : 0 %></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Worked</span>
+                        <span class="stat-value"><%= workedOperators ? workedOperators.length : 0 %></span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Bottom Queue Bar -->
+        <div class="bottom-queue">
+            <% if (typeof queueList !== 'undefined' && queueList.length > 0) { %>
+                <% queueList.slice(0, 4).forEach((operator, index) => { %>
+                <div class="queue-card">
+                    <img src="<%= operator.profileImage %>" alt="<%= operator.callsign %>" class="queue-image">
+                    <div class="queue-info">
+                        <h3 class="queue-callsign"><%= operator.callsign %></h3>
+                        <p class="queue-location"><%= operator.location %></p>
+                        <p class="queue-time"><%= operator.waitTime %></p>
+                    </div>
+                </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map with darker tiles
+        const map = L.map('map').setView([45, -93], 4);
         
-        document.querySelectorAll('.operator-card').forEach(function(card) {
-            card.addEventListener('click', function() {
-                const callsign = this.dataset.callsign;
-                const lat = parseFloat(this.dataset.lat);
-                const lon = parseFloat(this.dataset.lon);
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+            attribution: '© Stadia Maps © OpenMapTiles © OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add operators to map
+        <% if (typeof operators !== 'undefined') { %>
+        const operatorsData = <%- JSON.stringify(operators) %>;
+        
+        operatorsData.forEach(operator => {
+            if (operator.coordinates) {
+                let className = 'worked';
+                if (operator.status === 'queue') className = 'queue';
+                if (operator.status === 'current') className = 'current';
                 
-                map.flyTo([lat, lon], 8, {
-                    duration: 1.5
+                const icon = L.divIcon({
+                    html: `<div class="marker-avatar ${className}"><img src="${operator.profileImage}" alt="${operator.callsign}" /></div>`,
+                    iconSize: [60, 60],
+                    iconAnchor: [30, 30],
+                    popupAnchor: [0, -30],
+                    className: 'custom-marker'
                 });
                 
-                setTimeout(function() {
-                    if (markers[callsign]) {
-                        markers[callsign].openPopup();
-                    }
-                }, 1500);
-                
-                document.querySelectorAll('.operator-card').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-            });
+                const marker = L.marker([operator.coordinates.lat, operator.coordinates.lon], { icon })
+                    .addTo(map)
+                    .bindPopup(`
+                        <div class="map-popup">
+                            <strong>${operator.callsign}</strong><br>
+                            ${operator.name}<br>
+                            ${operator.location}
+                        </div>
+                    `);
+            }
         });
+        <% } %>
+
+        // Update clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getUTCHours()).padStart(2, '0');
+            const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        }
+        
+        updateClock();
+        setInterval(updateClock, 1000);
     </script>
 </body>
 </html>

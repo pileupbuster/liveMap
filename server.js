@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const operators = require('./data/operators');
+const { operators, queueData } = require('./data/operators');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,14 +17,13 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
   try {
-    const sortedOperators = [...operators].sort((a, b) => 
-      new Date(b.contactTime) - new Date(a.contactTime)
-    );
-    
     res.render('index', { 
-      title: 'Ham Radio Live Map',
-      operators: sortedOperators,
-      operatorsJSON: JSON.stringify(sortedOperators)
+      title: 'Ham Radio Queue System',
+      operators,
+      operatorsJSON: JSON.stringify(operators),
+      currentOperator: queueData.current,
+      queueList: queueData.queue,
+      workedOperators: queueData.worked
     });
   } catch (error) {
     console.error('Error loading operators:', error);

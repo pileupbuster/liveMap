@@ -5,3 +5,25 @@
 Ham Radio Live Map server running on http://localhost:3000
 2025-07-30T13:24:39.569Z - GET /
 2025-07-30T13:25:32.731Z - GET /
+2025-07-30T14:24:47.030Z - GET /
+2025-07-30T14:26:05.496Z - GET /
+2025-07-30T14:30:56.073Z - GET /
+ReferenceError: /Users/bek/Data/Repo/github/liveMap/views/index.ejs:54
+    52|                     <div class="stat-item">
+    53|                         <span class="stat-label">In Queue</span>
+ >> 54|                         <span class="stat-value"><%= queueList ? queueList.length : 0 %></span>
+    55|                     </div>
+    56|                     <div class="stat-item">
+    57|                         <span class="stat-label">Worked</span>
+
+queueList is not defined
+    at eval ("/Users/bek/Data/Repo/github/liveMap/views/index.ejs":23:26)
+    at index (/Users/bek/Data/Repo/github/liveMap/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/Users/bek/Data/Repo/github/liveMap/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/Users/bek/Data/Repo/github/liveMap/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/Users/bek/Data/Repo/github/liveMap/node_modules/express/lib/view.js:139:8)
+    at tryRender (/Users/bek/Data/Repo/github/liveMap/node_modules/express/lib/application.js:627:10)
+    at app.render (/Users/bek/Data/Repo/github/liveMap/node_modules/express/lib/application.js:574:3)
+    at ServerResponse.render (/Users/bek/Data/Repo/github/liveMap/node_modules/express/lib/response.js:909:7)
+    at /Users/bek/Data/Repo/github/liveMap/server.js:24:9
+    at Layer.handleRequest (/Users/bek/Data/Repo/github/liveMap/node_modules/router/lib/layer.js:152:17)

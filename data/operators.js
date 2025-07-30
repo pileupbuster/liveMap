@@ -1,94 +1,117 @@
 const operators = [
-  {
-    callsign: 'W1ABC',
-    name: 'John Anderson',
-    location: 'Boston, MA, USA',
-    coordinates: { lat: 42.3601, lon: -71.0589 },
-    gridSquare: 'FN42',
-    profileImage: 'https://cdn-bio.qrz.com/w/kk7rrw/wadeshearer_tight_png.jpg?p=15b11e581c9c54aa2f9efbff14840398',
-    contactTime: new Date(Date.now() - 1000 * 60 * 5).toISOString()
-  },
-  {
-    callsign: 'K2DEF',
-    name: 'Sarah Wilson',
-    location: 'New York, NY, USA',
-    coordinates: { lat: 40.7128, lon: -74.0060 },
-    gridSquare: 'FN20',
-    profileImage: 'https://cdn-bio.qrz.com/r/dl1rbr/Rainer.PNG?p=dbc5445c92c0fdd5d3763e86e9089c3f',
-    contactTime: new Date(Date.now() - 1000 * 60 * 15).toISOString()
-  },
-  {
-    callsign: 'VE3GHI',
-    name: 'Michael Thompson',
-    location: 'Toronto, ON, Canada',
-    coordinates: { lat: 43.6532, lon: -79.3832 },
-    gridSquare: 'FN03',
-    profileImage: 'https://cdn-bio.qrz.com/f/wa3ptf/1083_4E51_B027_F9CC51BF85E2_jpeg.jpg?p=e63dff80d62185d3a6b1aa91031b96f0',
-    contactTime: new Date(Date.now() - 1000 * 60 * 30).toISOString()
-  },
-  {
-    callsign: 'W5JKL',
-    name: 'Patricia Davis',
-    location: 'Dallas, TX, USA',
-    coordinates: { lat: 32.7767, lon: -96.7970 },
-    gridSquare: 'EM12',
-    profileImage: 'https://cdn-bio.qrz.com/u/iu5kzu/IU5KZU2_png.jpg?p=36dbf3c87f83f5fa3e988c01c12c2440',
-    contactTime: new Date(Date.now() - 1000 * 60 * 45).toISOString()
-  },
-  {
-    callsign: 'K6MNO',
-    name: 'Robert Martinez',
-    location: 'Los Angeles, CA, USA',
-    coordinates: { lat: 34.0522, lon: -118.2437 },
-    gridSquare: 'DM04',
-    profileImage: 'https://cdn-bio.qrz.com/r/yb4kar/5390_267314243421586_679497191_n.jpg?p=bd36ece850291da11a5e84dfc51986f1',
-    contactTime: new Date(Date.now() - 1000 * 60 * 60).toISOString()
-  },
-  {
-    callsign: 'W7PQR',
-    name: 'Jennifer Lee',
-    location: 'Seattle, WA, USA',
-    coordinates: { lat: 47.6062, lon: -122.3321 },
-    gridSquare: 'CN87',
-    profileImage: 'https://cdn-bio.qrz.com/r/ko6hjr/jonesport.jpeg',
-    contactTime: new Date(Date.now() - 1000 * 60 * 90).toISOString()
-  },
-  {
-    callsign: 'VE9STU',
-    name: 'David Campbell',
-    location: 'Halifax, NS, Canada',
-    coordinates: { lat: 44.6488, lon: -63.5752 },
-    gridSquare: 'FN84',
-    profileImage: '/images/placeholder.svg',
-    contactTime: new Date(Date.now() - 1000 * 60 * 120).toISOString()
-  },
-  {
-    callsign: 'K0VWX',
-    name: 'Maria Rodriguez',
-    location: 'Denver, CO, USA',
-    coordinates: { lat: 39.7392, lon: -104.9903 },
-    gridSquare: 'DM79',
-    profileImage: '/images/placeholder.svg',
-    contactTime: new Date(Date.now() - 1000 * 60 * 150).toISOString()
-  },
-  {
-    callsign: 'W4YZA',
-    name: 'James Brown',
-    location: 'Atlanta, GA, USA',
-    coordinates: { lat: 33.7490, lon: -84.3880 },
-    gridSquare: 'EM73',
-    profileImage: '/images/placeholder.svg',
-    contactTime: new Date(Date.now() - 1000 * 60 * 180).toISOString()
-  },
-  {
-    callsign: 'K8BCD',
-    name: 'Elizabeth Taylor',
-    location: 'Chicago, IL, USA',
-    coordinates: { lat: 41.8781, lon: -87.6298 },
-    gridSquare: 'EN61',
-    profileImage: '/images/placeholder.svg',
-    contactTime: new Date(Date.now() - 1000 * 60 * 210).toISOString()
-  }
+    {
+        callsign: 'W1ABC',
+        name: 'John Smith',
+        location: 'Boston, MA, USA',
+        coordinates: { lat: 42.3601, lon: -71.0589 },
+        gridSquare: 'FN42',
+        profileImage: 'https://i.pravatar.cc/150?img=12',
+        contactTime: '2024-01-30T14:30:00Z',
+        status: 'worked'
+    },
+    {
+        callsign: 'K2DEF',
+        name: 'Sarah Johnson',
+        location: 'New York, NY, USA',
+        coordinates: { lat: 40.7128, lon: -74.0060 },
+        gridSquare: 'FN30',
+        profileImage: 'https://i.pravatar.cc/150?img=5',
+        contactTime: '2024-01-30T14:25:00Z',
+        status: 'worked'
+    },
+    {
+        callsign: 'W3GHI',
+        name: 'Mike Davis',
+        location: 'Philadelphia, PA, USA',
+        coordinates: { lat: 39.9526, lon: -75.1652 },
+        gridSquare: 'FM29',
+        profileImage: 'https://i.pravatar.cc/150?img=8',
+        contactTime: '2024-01-30T14:20:00Z',
+        status: 'worked'
+    },
+    {
+        callsign: 'N4JKL',
+        name: 'Emily Wilson',
+        location: 'Atlanta, GA, USA',
+        coordinates: { lat: 33.7490, lon: -84.3880 },
+        gridSquare: 'EM73',
+        profileImage: 'https://i.pravatar.cc/150?img=9',
+        contactTime: '2024-01-30T14:15:00Z',
+        status: 'worked'
+    },
+    {
+        callsign: 'W5MNO',
+        name: 'Robert Brown',
+        location: 'Dallas, TX, USA',
+        coordinates: { lat: 32.7767, lon: -96.7970 },
+        gridSquare: 'EM12',
+        profileImage: 'https://i.pravatar.cc/150?img=3',
+        contactTime: '2024-01-30T14:10:00Z',
+        status: 'worked'
+    },
+    {
+        callsign: 'K6PQR',
+        name: 'Lisa Chen',
+        location: 'San Francisco, CA, USA',
+        coordinates: { lat: 37.7749, lon: -122.4194 },
+        gridSquare: 'CM87',
+        profileImage: 'https://i.pravatar.cc/150?img=1',
+        contactTime: '2024-01-30T14:05:00Z',
+        status: 'current'
+    },
+    {
+        callsign: 'ON8EI',
+        name: 'Erik Janssen',
+        location: 'Belgium',
+        coordinates: { lat: 47.6062, lon: -122.3321 },
+        gridSquare: 'CN87',
+        profileImage: 'https://i.pravatar.cc/150?img=14',
+        contactTime: '2024-01-30T14:00:00Z',
+        status: 'queue',
+        waitTime: '00:05'
+    },
+    {
+        callsign: 'W2RE',
+        name: 'Ray Anderson',
+        location: 'United States',
+        coordinates: { lat: 62.4540, lon: -114.3718 },
+        gridSquare: 'EP21',
+        profileImage: 'https://i.pravatar.cc/150?img=16',
+        contactTime: '2024-01-30T13:55:00Z',
+        status: 'queue',
+        waitTime: '00:15'
+    },
+    {
+        callsign: 'ET2II',
+        name: 'Mohammed Ali',
+        location: 'Ireland',
+        coordinates: { lat: 41.8781, lon: -87.6298 },
+        gridSquare: 'EN61',
+        profileImage: 'https://i.pravatar.cc/150?img=7',
+        contactTime: '2024-01-30T13:50:00Z',
+        status: 'queue',
+        waitTime: '00:25'
+    },
+    {
+        callsign: 'EI5JBB',
+        name: 'James Burke',
+        location: 'Ireland',
+        coordinates: { lat: 39.7392, lon: -104.9903 },
+        gridSquare: 'DM79',
+        profileImage: 'https://i.pravatar.cc/150?img=20',
+        contactTime: '2024-01-30T13:45:00Z',
+        status: 'queue',
+        waitTime: '00:48'
+    }
 ];
 
-module.exports = operators;
+const queueData = {
+    current: operators.find(op => op.status === 'current'),
+    queue: operators.filter(op => op.status === 'queue'),
+    worked: operators.filter(op => op.status === 'worked').map(op => ({
+        ...op,
+        qsoTime: '05:23'
+    }))
+};
+
+module.exports = { operators, queueData };
