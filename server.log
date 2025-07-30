@@ -1,0 +1,7 @@
+
+> livemap@1.0.0 start
+> node server.js
+
+Ham Radio Live Map server running on http://localhost:3000
+2025-07-30T13:24:39.569Z - GET /
+2025-07-30T13:25:32.731Z - GET /
