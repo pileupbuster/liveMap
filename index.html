@@ -208,11 +208,11 @@
         // Initialize map with darker tiles
         const map = L.map('map').setView([45, -93], 4);
         
-        // Using CARTO dark tiles - free and no authentication required
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 19
+        // Using Stadia Maps Alidade Smooth Dark with API key
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=21ff9858-9e51-49fb-91eb-e587a86105e9', {
+            attribution: '© <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> © <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            retina: '@2x',
+            maxZoom: 20
         }).addTo(map);
 
         // Add operators to map

@@ -19,7 +19,7 @@ This is now a **static website** that can be hosted anywhere without a server. S
 ## Usage
 
 ### Option 1: Direct File Access
-Simply open `index.html` in your web browser. The map uses CARTO tiles which work without authentication.
+Simply open `index.html` in your web browser. The map uses Stadia Maps with an included API key.
 
 ### Option 2: Local Web Server
 For development, you can serve it locally:
