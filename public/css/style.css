@@ -1,0 +1,208 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #333333;
+    background-color: #F5F5F5;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.map-container {
+    flex: 0 0 70%;
+    height: 100%;
+    position: relative;
+}
+
+.sidebar {
+    flex: 0 0 30%;
+    background-color: white;
+    overflow-y: auto;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+    padding: 20px;
+    background-color: #2196F3;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.operators-list {
+    padding: 10px;
+}
+
+.operator-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #FAFAFA;
+    border-radius: 8px;
+    border: 1px solid #E0E0E0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.operator-card:hover {
+    background-color: #E3F2FD;
+    border-color: #2196F3;
+    transform: translateX(-5px);
+    box-shadow: 0 4px 10px rgba(33, 150, 243, 0.2);
+}
+
+.operator-card.active {
+    background-color: #BBDEFB;
+    border-color: #2196F3;
+    border-width: 2px;
+}
+
+.operator-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid #2196F3;
+    background-color: white;
+}
+
+.operator-info {
+    flex: 1;
+}
+
+.operator-callsign {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2196F3;
+    margin-bottom: 4px;
+}
+
+.operator-name {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 2px;
+}
+
+.operator-location {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.operator-grid {
+    font-size: 0.8rem;
+    color: #888;
+    font-family: monospace;
+}
+
+.custom-marker {
+    border: none !important;
+    background: transparent !important;
+}
+
+.marker-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #2196F3;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    position: relative;
+}
+
+.marker-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.popup-content {
+    text-align: center;
+    min-width: 200px;
+}
+
+.popup-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 2px solid #2196F3;
+}
+
+.popup-content h3 {
+    color: #2196F3;
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+
+.popup-content p {
+    margin: 3px 0;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+    .map-container {
+        flex: 0 0 60%;
+    }
+    
+    .sidebar {
+        flex: 0 0 40%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .map-container {
+        flex: 1;
+        height: 60vh;
+    }
+    
+    .sidebar {
+        flex: 1;
+        height: 40vh;
+    }
+    
+    .sidebar-title {
+        position: relative;
+        padding: 15px;
+        font-size: 1.2rem;
+    }
+    
+    .operator-card {
+        padding: 10px;
+    }
+    
+    .operator-image {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+.leaflet-container {
+    font-family: inherit;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-popup-tip {
+    background-color: white;
+}
