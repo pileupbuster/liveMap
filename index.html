@@ -319,23 +319,23 @@
                     `);
             }, 800);
 
-            // 3. Get first queue operator from leftmost position
-            const firstQueueCard = document.querySelector('.queue-card[data-position="0"]:not(.placeholder)');
-            if (!firstQueueCard) return; // No more operators in queue
+            // 3. Get last queue operator from rightmost position (EI5JBB)
+            const lastQueueCard = document.querySelector('.queue-card[data-position="3"]:not(.placeholder)');
+            if (!lastQueueCard) return; // No more operators in queue
             
-            const firstQueueData = {
-                callsign: firstQueueCard.querySelector('.queue-callsign').textContent,
-                name: firstQueueCard.querySelector('.queue-callsign').textContent === 'ON8EI' ? 'Erik Janssen' :
-                      firstQueueCard.querySelector('.queue-callsign').textContent === 'W2RE' ? 'Ray Anderson' :
-                      firstQueueCard.querySelector('.queue-callsign').textContent === 'ET2II' ? 'Mohammed Ali' :
+            const lastQueueData = {
+                callsign: lastQueueCard.querySelector('.queue-callsign').textContent,
+                name: lastQueueCard.querySelector('.queue-callsign').textContent === 'ON8EI' ? 'Erik Janssen' :
+                      lastQueueCard.querySelector('.queue-callsign').textContent === 'W2RE' ? 'Ray Anderson' :
+                      lastQueueCard.querySelector('.queue-callsign').textContent === 'ET2II' ? 'Mohammed Ali' :
                       'James Burke',
-                location: firstQueueCard.querySelector('.queue-location').textContent,
-                image: firstQueueCard.querySelector('.queue-image').src
+                location: lastQueueCard.querySelector('.queue-location').textContent,
+                image: lastQueueCard.querySelector('.queue-image').src
             };
 
-            // 4. Create rising animation for EI5JBB
-            const queueRect = firstQueueCard.getBoundingClientRect();
-            const risingClone = firstQueueCard.cloneNode(true);
+            // 4. Create rising animation for last operator (EI5JBB)
+            const queueRect = lastQueueCard.getBoundingClientRect();
+            const risingClone = lastQueueCard.cloneNode(true);
             risingClone.className = 'rise-to-current';
             risingClone.style.position = 'fixed';
             risingClone.style.left = queueRect.left + 'px';
@@ -360,44 +360,35 @@
 
             // 6. Update UI after animations
             setTimeout(() => {
-                // Update current operator
-                document.getElementById('currentCallsign').textContent = firstQueueData.callsign;
-                document.getElementById('currentName').textContent = firstQueueData.name;
-                document.getElementById('currentLocation').textContent = 'Working from ' + firstQueueData.location;
-                document.getElementById('currentOperatorImage').src = firstQueueData.image;
+                // Update current operator with last queue operator (EI5JBB)
+                document.getElementById('currentCallsign').textContent = lastQueueData.callsign;
+                document.getElementById('currentName').textContent = lastQueueData.name;
+                document.getElementById('currentLocation').textContent = 'Working from ' + lastQueueData.location;
+                document.getElementById('currentOperatorImage').src = lastQueueData.image;
 
-                // Shift queue cards left
-                for (let i = 0; i < 3; i++) {
-                    const currentCard = document.querySelector(`.queue-card[data-position="${i}"]`);
-                    const nextCard = document.querySelector(`.queue-card[data-position="${i+1}"]`);
-                    
-                    if (nextCard && !nextCard.classList.contains('placeholder')) {
-                        currentCard.querySelector('.queue-image').src = nextCard.querySelector('.queue-image').src;
-                        currentCard.querySelector('.queue-image').alt = nextCard.querySelector('.queue-image').alt;
-                        currentCard.querySelector('.queue-callsign').textContent = nextCard.querySelector('.queue-callsign').textContent;
-                        currentCard.querySelector('.queue-location').textContent = nextCard.querySelector('.queue-location').textContent;
-                        currentCard.querySelector('.queue-time').textContent = nextCard.querySelector('.queue-time').textContent;
-                        currentCard.classList.remove('placeholder');
-                    } else {
-                        // No more operators, show placeholder
-                        currentCard.classList.add('placeholder');
-                        currentCard.innerHTML = `
-                            <div class="queue-placeholder-icon">➕</div>
-                            <div class="queue-info">
-                                <h3 class="queue-callsign" style="color: rgba(255,255,255,0.4)">Empty</h3>
-                                <p class="queue-location" style="color: rgba(255,255,255,0.3)">No operator</p>
-                                <p class="queue-time" style="color: rgba(255,255,255,0.3)">--:--</p>
-                            </div>
-                        `;
-                    }
-                }
-
-                // Last position becomes placeholder
+                // Decrement remaining operators
                 remainingOperators--;
-                if (remainingOperators < 4) {
-                    const lastCard = document.querySelector('.queue-card[data-position="3"]');
-                    lastCard.classList.add('placeholder');
-                    lastCard.innerHTML = `
+
+                // Clear rightmost position (where EI5JBB was)
+                const lastCard = document.querySelector('.queue-card[data-position="3"]');
+                lastCard.style.opacity = '0';
+                
+                setTimeout(() => {
+                    // Shift everyone left
+                    for (let i = 3; i > 0; i--) {
+                        const currentCard = document.querySelector(`.queue-card[data-position="${i}"]`);
+                        const prevCard = document.querySelector(`.queue-card[data-position="${i-1}"]`);
+                        
+                        if (!prevCard.classList.contains('placeholder')) {
+                            currentCard.innerHTML = prevCard.innerHTML;
+                            currentCard.className = prevCard.className;
+                        }
+                    }
+                    
+                    // Leftmost position becomes placeholder
+                    const firstCard = document.querySelector('.queue-card[data-position="0"]');
+                    firstCard.classList.add('placeholder');
+                    firstCard.innerHTML = `
                         <div class="queue-placeholder-icon">➕</div>
                         <div class="queue-info">
                             <h3 class="queue-callsign" style="color: rgba(255,255,255,0.4)">Empty</h3>
@@ -405,15 +396,18 @@
                             <p class="queue-time" style="color: rgba(255,255,255,0.3)">--:--</p>
                         </div>
                     `;
-                }
+                    
+                    // Restore opacity
+                    lastCard.style.opacity = '1';
+                }, 200);
 
                 // Update current operator data
                 currentOperator = {
-                    callsign: firstQueueData.callsign,
-                    name: firstQueueData.name,
-                    location: firstQueueData.location,
+                    callsign: lastQueueData.callsign,
+                    name: lastQueueData.name,
+                    location: lastQueueData.location,
                     coordinates: { lat: 52.5200, lon: -7.1380 }, // Ireland coordinates
-                    profileImage: firstQueueData.image
+                    profileImage: lastQueueData.image
                 };
 
                 // Clean up clones
